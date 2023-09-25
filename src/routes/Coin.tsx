@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router";
 import styled from "styled-components";
 
-// interface RouteParams {
-//   coinId: string;
-//   [key: string]: string | undefined;
-// }
+interface RouteParams {
+  coinId: string;
+  [key: string]: string | undefined;
+}
 
 interface RouteState {
   name: string;
@@ -34,11 +34,26 @@ const Loader = styled.div`
 `;
 
 function Coin() {
-  // const { coinId } = useParams<RouteParams>();
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const state = location.state as RouteState;
-  console.log(state);
-  const [loading, setLoading] = useState(true);
+  const { coinId } = useParams<RouteParams>();
+  const [info, setInfo] = useState({});
+  const [priceInfo, setPriceInfo] = useState({});
+  useEffect(() => {
+    (async () => {
+      const infoData = await (
+        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+      ).json();
+      console.log(infoData);
+      const priceData = await (
+        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+      ).json();
+      console.log(priceData);
+      setInfo(infoData);
+      setPriceInfo(priceData);
+    })();
+  }, []);
   return (
     <Container>
       <Header>
