@@ -33,13 +33,50 @@ const Loader = styled.div`
   text-align: center;
 `;
 
+interface InfoData {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+  logo: string;
+  description: string;
+  message: string;
+  open_source: boolean;
+  started_at: string;
+  development_status: string;
+  hardware_wallet: boolean;
+  proof_type: string;
+  org_structure: string;
+  hash_algorithm: string;
+  whitepaper: object;
+  first_data_at: string;
+  last_data_at: string;
+}
+
+interface PriceData {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  circulating_supply: number;
+  total_supply: number;
+  max_supply: number;
+  beta_value: number;
+  first_data_at: string;
+  last_updated: string;
+  quotes: object;
+}
+
 function Coin() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const state = location.state as RouteState;
   const { coinId } = useParams<RouteParams>();
-  const [info, setInfo] = useState({});
-  const [priceInfo, setPriceInfo] = useState({});
+  const [info, setInfo] = useState<InfoData>({});
+  const [priceInfo, setPriceInfo] = useState<PriceData>({});
   useEffect(() => {
     (async () => {
       const infoData = await (
@@ -59,7 +96,7 @@ function Coin() {
       <Header>
         <Title>코인 {state?.name || "Loading..."}</Title>
       </Header>
-      {loading ? <Loader>Loading...</Loader> : null}
+      {loading ? <Loader>Loading...</Loader> : }
     </Container>
   );
 }
