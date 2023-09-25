@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import Router from "./Router";
+import { Outlet } from "react-router";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -54,11 +54,11 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-  body {
+body {
   font-family: 'Source Sans 3', sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor};
-  }
+  background-color:${(props) => props.theme.bgColor};
+  color:${(props) => props.theme.textColor}
+}
   a {
     text-decoration: none;
   }
@@ -68,7 +68,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Router />
+      <Outlet />
     </>
   );
 }

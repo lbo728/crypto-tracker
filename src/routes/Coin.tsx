@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 
 interface RouteParams {
   coinId: string;
+  [key: string]: string | undefined;
 }
 
 function Coin() {
