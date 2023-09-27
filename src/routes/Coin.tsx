@@ -213,11 +213,11 @@ function Coin() {
           </Overview>
 
           <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
             <Tab isActive={priceMatch !== null}>
               <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
           </Tabs>
 
@@ -227,7 +227,10 @@ function Coin() {
           </Routes>
           <Routes>
             {/* <Route path={`/${coinId}/chart`} element={<Chart />}></Route> */}
-            <Route path="chart" element={<Chart />}></Route>
+            <Route
+              path="chart"
+              element={<Chart coinId={coinId as string} />}
+            ></Route>
           </Routes>
         </>
       )}
