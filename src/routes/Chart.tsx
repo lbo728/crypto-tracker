@@ -18,8 +18,12 @@ interface IHistorical {
 }
 
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
-    fetchCoinHistory(coinId)
+  const { isLoading, data } = useQuery<IHistorical[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId)
+    // {
+    //   refetchInterval: 1000,
+    // }
   );
   console.log("close?", data?.map((price) => price.close) as number[]);
   return (

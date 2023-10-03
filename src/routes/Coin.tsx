@@ -4,6 +4,7 @@ import Price from "./Price";
 import Chart from "./Chart";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import { fetchCoinInfo, fetchCoinTickers } from "../\bapi";
 
 interface RouteParams {
@@ -155,10 +156,18 @@ function Coin() {
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
     () => fetchCoinTickers(`${coinId}`)
+    // {
+    //   refetchInterval: 5000,
+    // }
   );
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -178,8 +187,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>${tickersData?.quotes.USD.price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -204,11 +213,9 @@ function Coin() {
           </Tabs>
 
           <Routes>
-            {/* <Route path={`/${coinId}/price`} element={<Price />}></Route> */}
             <Route path="price" element={<Price />}></Route>
           </Routes>
           <Routes>
-            {/* <Route path={`/${coinId}/chart`} element={<Chart />}></Route> */}
             <Route
               path="chart"
               element={<Chart coinId={coinId as string} />}
