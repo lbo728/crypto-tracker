@@ -18,10 +18,6 @@ export function fetchCoinTickers(coinId: string) {
 }
 
 export function fetchCoinHistory(coinId: string) {
-  const endDate = Math.floor(Date.now() / 1000);
-  // Date.now -> 현재 시간의 밀리세컨즈
-  const startDate = endDate - 60 * 60 * 24 * 7;
-  // 오늘로부터 일주일 전
   return fetch(`${BASE_URL2}?coinId=${coinId}`).then((response) =>
     response.json()
   );
