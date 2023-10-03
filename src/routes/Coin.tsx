@@ -1,11 +1,17 @@
-import { Route, Routes, useLocation, useMatch, useParams } from "react-router";
-import styled from "styled-components";
-import Price from "./Price";
-import Chart from "./Chart";
-import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
-import { fetchCoinInfo, fetchCoinTickers } from "../\bapi";
+import {
+  Switch,
+  Route,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import Chart from "./Chart";
+import Price from "./Price";
 
 interface RouteParams {
   coinId: string;
@@ -141,12 +147,16 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const location = useLocation();
   const state = location.state as RouteState;
-  const priceMatch = useMatch("/:coinId/price");
-  const chartMatch = useMatch("/:coinId/chart");
+  const priceMatch = useRouteMatch("/:coinId/price");
+  const chartMatch = useRouteMatch("/:coinId/chart");
   console.log("priceMatch", priceMatch);
   console.log("chartMatch", chartMatch);
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -212,15 +222,14 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Routes>
-            <Route path="price" element={<Price />}></Route>
-          </Routes>
-          <Routes>
-            <Route
-              path="chart"
-              element={<Chart coinId={coinId as string} />}
-            ></Route>
-          </Routes>
+          <Switch>
+            <Route path={`/:coinId/price`}>
+              <Price />
+            </Route>
+            <Route path={`/:coinId/chart`}>
+              <Chart isDark={isDark} coinId={coinId} />
+            </Route>
+          </Switch>
         </>
       )}
     </Container>
